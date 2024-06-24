@@ -3,7 +3,6 @@
     Created on : Jun 6, 2024, 10:42:16 AM
     Author     : pc
 --%>
-<%--<%@page session="false" %>--%>
 <%@page import="hunglt.registration.RegistrationDAO"%>
 <%@page import="hunglt.registration.RegistrationDTO"%>
 <%@page import="java.util.List"%>

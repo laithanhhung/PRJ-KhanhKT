@@ -9,7 +9,7 @@ package hunglt.orders;
  *
  * @author pc
  */
-public class OrdesrDTO {
+public class OrdersDTO {
     private String id;
     private String date;
     private String customer;
@@ -17,10 +17,10 @@ public class OrdesrDTO {
     private String email;
     private float total;
 
-    public OrdesrDTO() {
+    public OrdersDTO() {
     }
 
-    public OrdesrDTO(String id, String date, String customer, String Address, String email, float total) {
+    public OrdersDTO(String id, String date, String customer, String Address, String email, float total) {
         this.id = id;
         this.date = date;
         this.customer = customer;
