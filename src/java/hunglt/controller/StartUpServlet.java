@@ -6,6 +6,7 @@
 package hunglt.controller;
 
 import hunglt.registration.RegistrationDAO;
+import hunglt.registration.RegistrationDTO;
 import java.io.IOException;
 import java.sql.SQLException;
 import javax.naming.NamingException;
@@ -53,9 +54,9 @@ public class StartUpServlet extends HttpServlet {
                 String password = recentCookie.getValue();
                 //4. call method of Model/DAO
                 RegistrationDAO dao = new RegistrationDAO();
-                boolean result = dao.checkLogin(username, password);
+                RegistrationDTO result = dao.checkLogin(username, password);
                 //5. process result
-                if(result){
+                if(result != null){
                     url = SEARCH_PAGE;
                     //sending Cookie
                 }//authentication is ok

@@ -6,6 +6,7 @@
 package hunglt.controller;
 
 import hunglt.registration.RegistrationDAO;
+import hunglt.registration.RegistrationDTO;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.SQLException;
@@ -16,6 +17,7 @@ import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 /**
  *
@@ -23,7 +25,7 @@ import javax.servlet.http.HttpServletResponse;
  */
 public class LoginServlet extends HttpServlet {
 
-    private final String SEARCH_PAGE = "search.html";
+    private final String SEARCH_PAGE = "search.jsp";
     private final String INVALID_PAGE = "invalid.html";
 
     /**
@@ -50,13 +52,18 @@ public class LoginServlet extends HttpServlet {
             //2.1 New DAO Object
             RegistrationDAO dao = new RegistrationDAO();
             //2.2 call method of DAO
-            boolean result = dao.checkLogin(username, password);
+            RegistrationDTO result = dao.checkLogin(username, password);
             //3. Process result
-            if (result) {
+            if (result != null) {
                 url = SEARCH_PAGE;
-                Cookie cooki = new Cookie(username, password);
-                cooki.setMaxAge(60 * 30);
-                response.addCookie(cooki);
+                //Bỏ Cookie
+//                Cookie cooki = new Cookie(username, password);
+//                cooki.setMaxAge(60 * 30);
+//                response.addCookie(cooki);
+                //Open Session
+                HttpSession session = request.getSession();
+                session.setAttribute("USER", result);
+                session.setAttribute("USERNAME", username);
             }//user is authenticated
         } catch (NamingException ex) {
             ex.printStackTrace();

@@ -21,18 +21,18 @@ import javax.naming.NamingException;
  */
 public class RegistrationDAO implements Serializable {
 
-    public boolean checkLogin(String username, String password) throws SQLException, NamingException {
+    public RegistrationDTO checkLogin(String username, String password) throws SQLException, NamingException {
         Connection con = null;
         PreparedStatement stm = null;
         ResultSet rs = null;
-        boolean result = false;
+        RegistrationDTO result = null;
 
         try {
             //1. connect DB
             con = DBHelper.getConnection();
             if (con != null) {
                 //2. create SQL String
-                String sql = "Select username "
+                String sql = "Select lastname, isAdmin "
                         + "From Registration "
                         + "Where username = ? "
                         + "And password = ?";
@@ -44,7 +44,12 @@ public class RegistrationDAO implements Serializable {
                 rs = stm.executeQuery();
                 //5. Process result
                 if (rs.next()) {
-                    result = true;
+                    //map
+                    //get
+                    String fullName = rs.getString("lastname");
+                    boolean role = rs.getBoolean("isAdmin");
+                    //set
+                    result = new RegistrationDTO(username, "", fullName, role);
                 }//username and password are existed
             }//end connection is available
         } finally {
