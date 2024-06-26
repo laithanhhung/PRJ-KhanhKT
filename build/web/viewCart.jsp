@@ -3,10 +3,8 @@
     Created on : Jun 17, 2024, 11:06:44 AM
     Author     : pc
 --%>
-
-<%@page import="java.util.Map"%>
-<%@page import="hunglt.cart.CartBean"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
+<%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <!DOCTYPE html>
 <html>
     <head>
@@ -38,7 +36,7 @@
                 height: 260px;
                 border:#080710 1px solid;
                 border-radius: 4px;
-                
+
             }
             .form__input{
                 width: 90%;
@@ -54,12 +52,83 @@
                 display: block;
             }
             .btn__checkout{
-               margin-bottom: 15px;
+                margin-bottom: 15px;
             }
         </style>
     </head>
     <body>
         <h1>Your cart includes</h1>
+        <c:set var="cart" value="${sessionScope.CART}"/>
+        <c:if test="${not empty cart}">
+            <c:set var="items" value="${cart.items}"/>
+            <c:if test="${not empty items}">
+                <form class="checkout__form">
+                    <div class="yourCart">
+                        <table border="1">
+                            <thead>
+                                <tr>
+                                    <th>No.</th>
+                                    <th>Title</th>
+                                    <th>Quantity</th>
+                                    <th>Action</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <c:forEach var="key" items="${items.keySet()}" varStatus="counter">
+                                    <tr>
+                                        <td class="content--center">
+                                            ${counter.count}
+                                        </td>
+                                        <td>
+                                            ${key}
+                                        </td>
+                                        <td class="content--center">
+                                            ${items.get(key)}
+                                        </td>
+                                        <td class="content--center">
+                                            <input type="checkbox" name="chkItem" value="${key}">    
+                                        </td>
+                                    </tr>
+                                </c:forEach>
+                                <tr>
+                                    <td colspan="3" class="content--center">
+                                        <a href="DispatchServlet?btAction=Market" style="text-decoration: none; color: black">Add more Books to cart</a>
+                                    </td>
+                                    <td class="content--center">
+                                        <input type="submit" name="btAction" value="Remove Selected Item"/>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="yourInformation">
+                        <h3 class="content--center">Your Information</h3><br>
+                        <div class="form__input">
+                            <label for="customer">Customer</label>
+                            <input id="customer" type="text" name="txtCustomer">
+                        </div><br>
+                        <div class="form__input">
+                            <label for="email">Email</label>
+                            <input id="email" type="text" name="txtEmail">
+                        </div><br>
+                        <div class="form__input">
+                            <label for="address">Address</label>
+                            <input id="address" type="text" name="txtAddress">
+                        </div><br>
+                        <input class="btn__checkout" type="submit" name="btAction" value="Check Out" />
+                    </div>
+                </form>
+            </c:if>
+            <c:if test="${empty items}">
+                <h2>
+                    <font color="red">
+                    No cart exists!!!
+                    <a href="DispatchServlet?btAction=Market">Continue Shopping here!</a>
+                    </font>
+                </h2>
+            </c:if>
+        </c:if>
+        <%--<h1>Your cart includes</h1>
         <%
             //1. Cus goes to her/his  Cart Place
             if (session != null) {
@@ -144,6 +213,6 @@
                 No card is existed!!!
                 <a href="DispatchServlet?btAction=Market">Shopping Continue here!</a>
             </font>
-        </h2>
+        </h2>--%>
     </body>
 </html>

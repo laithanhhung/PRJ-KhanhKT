@@ -38,7 +38,7 @@ public class AddToCartServlet extends HttpServlet {
                             + "?btAction=Market";
         try {
             //1. Cus goes to Cart place
-            HttpSession session = request.getSession(true);// bắt buộc phải có Session
+            HttpSession session = request.getSession();// bắt buộc phải có Session
             //2. Cus takes Cart
             CartBean cart = (CartBean)session.getAttribute("CART");
             if(cart == null){
@@ -47,11 +47,11 @@ public class AddToCartServlet extends HttpServlet {
             //3. Cus drop Item to Cart: //item là ReqParam
             int sku = Integer.parseInt(request.getParameter("skuBook"));
             String name = request.getParameter("nameBook");
+            String description = request.getParameter("descriptionBook");
             int quantity = Integer.parseInt(request.getParameter("quantityBook"));
             float price = Float.parseFloat(request.getParameter("priceBook"));
             boolean status = request.getParameter("statusBook").equalsIgnoreCase("true");
-            ProductDTO item = new ProductDTO(sku, name, url, quantity, price, status);
-            
+            ProductDTO item = new ProductDTO(sku, name, description, quantity, price, status);
             cart.addIteamToCart(item);//có item rồi khỏi check exist
             session.setAttribute("CART", cart);//update session
         }catch(Exception e){

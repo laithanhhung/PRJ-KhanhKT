@@ -26,49 +26,53 @@
         <c:set var="searchValue" value="${param.txtSearchValue}"/>
         <c:if test = "${not empty searchValue}">
             <c:set var="result" value="${requestScope.SEARCH_RESULT}"/>
-                <c:if test="${not empty result}">
-                    <table>
-                        <thead>
+            <c:if test="${not empty result}">
+                <table border="1">
+                    <thead>
+                        <tr>
+                            <th>No.</th>
+                            <th>Username</th>
+                            <th>Password</th>
+                            <th>Full name</th>
+                            <th>Role</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <c:forEach var = "dto" items="${result}" varStatus="counter"> 
+                        <form action="DispatchServlet" method="POST">
                             <tr>
-                                <th>No.</th>
-                                <th>Username</th>
-                                <th>Password</th>
-                                <th>Full name</th>
-                                <th>Role</th>
+                                <td>
+                                    ${counter.count} 
+                                </td>
+                                <td>
+                                    <input type="text" name="txtUsername" 
+                                           value="${dto.username}" />
+                                </td>
+                                <td>
+                                    <input class="td__password" type="text" name="txtPassword"
+                                           value="${dto.password}" />
+                                </td>
+                                <td>
+                                    ${dto.fullName}
+                                </td>
+                                <td>
+                                    <c:if test="${dto.role}">
+                                        <input type="checkbox" name="chkAdmin" value="ON" checked="checked" />
+                                    </c:if>
+                                    <c:if test="${!dto.role}">
+                                        <input type="checkbox" name="chkAdmin" value="ON" />
+                                    </c:if>
+                                </td>
+                                <td><a href="${"DispatchServlet?btAction=Delete&pk&lastSearchValue="}" + ${searchValue}>Delete</a></td>
+                                <td>
+                                    <input type="submit" value="Update" name="btAction" />
+                                    <input type="hidden" name="lastSearchValue" 
+                                           value="${searchValue}"/>
+                                </td>
                             </tr>
-                        </thead>
-                        <tbody>
-                            <c:forEach var = "dto" items="${result}" varStatus="counter"> 
-                            <form action="DispatchServlet" method="POST">
-                                <tr>
-                                    <td>
-                                        ${counter.count} 
-                                    </td>
-                                    <td>
-
-                                        <input type="text" name="txtUsername" 
-                                               value="${dto.username}" />
-                                    </td>
-                                    <td>
-                                        <input class="td__password" type="text" name="txtPassword"
-                                               value="${dto.password}" />
-                                    </td>
-                                    <td>
-                                        ${dto.fullName}
-                                    </td>
-                                    <td>
-
-                                        <c:if test="${dto.role}">
-                                            <input type="checkbox" name="chkAdmin" value="ON" checked="checked" />
-                                        </c:if>
-                                        <c:if test="${!dto.role}">
-                                            <input type="checkbox" name="chkAdmin" value="ON" />
-                                        </c:if>
-                                    </td>
-                                </tr>
-                            </form>  
-                        </c:forEach>
-                    </c:if>
+                        </form>  
+                    </c:forEach>
+                </c:if>
                 <c:if test="${empty result}">
                     <h2>No record is matched!!!</h2>
                 </c:if>

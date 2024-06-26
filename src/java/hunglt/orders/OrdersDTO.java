@@ -13,18 +13,18 @@ public class OrdersDTO {
     private String id;
     private String date;
     private String customer;
-    private String Address;
+    private String address;
     private String email;
     private float total;
 
     public OrdersDTO() {
     }
 
-    public OrdersDTO(String id, String date, String customer, String Address, String email, float total) {
+    public OrdersDTO(String id, String date, String customer, String address, String email, float total) {
         this.id = id;
         this.date = date;
         this.customer = customer;
-        this.Address = Address;
+        this.address = address;
         this.email = email;
         this.total = total;
     }
@@ -75,14 +75,14 @@ public class OrdersDTO {
      * @return the Address
      */
     public String getAddress() {
-        return Address;
+        return address;
     }
 
     /**
      * @param Address the Address to set
      */
     public void setAddress(String Address) {
-        this.Address = Address;
+        this.address = Address;
     }
 
     /**

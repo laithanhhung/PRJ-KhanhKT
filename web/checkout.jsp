@@ -9,6 +9,7 @@
 <%@page import="hunglt.orderDetail.OrderDetailDTO"%>
 <%@page import="java.util.List"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
+<%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <!DOCTYPE html>
 <html>
     <head>
@@ -40,13 +41,10 @@
     <body>
         <div class="container">
             <form action="DispatchServlet">
-                <%
-                    List<OrderDetailDTO> orderDetaiList = (List<OrderDetailDTO>) request.getAttribute("OrderDetailList");
-                    List<ProductDTO> productList = (List<ProductDTO>) request.getAttribute("ProductList");
-                    OrdersDTO order = (OrdersDTO) request.getAttribute("Order");
-                    int count = 0;
-                %>
-                <h1><%= order.getId()%> is checked out Successfully!</h1>
+                <c:set var="orderDetaiList" value="${requestScope.OrderDetailList}"/>
+                <c:set var="productList" value="${requestScope.ProductList}"/>
+                <c:set var="order" value="${requestScope.Order}"/>
+                <h1>${order.id} is checked out Successfully!</h1>
                 <div class="table-wrapper">
                     <table class="table" border="1">
                         <thead>
@@ -59,33 +57,29 @@
                             </tr>
                         </thead>
                         <tbody>
-                            <%
-                                for (OrderDetailDTO dto : orderDetaiList) {
-                                %>
-                                    <tr>
-                                        <td ><%= ++count%></td>
-                                        <td><%= productList.get(count - 1).getName()%></td>
-                                        <td class="content--center"><%= dto.getQuantity()%></td>
-                                        <td class="content--center"><%= dto.getTotal()%></td>
-                                    </tr>
-                                <%
-                                }
-                            %>
+                            <c:forEach var="dto" items="${orderDetaiList}" varStatus="counter">
+                                <tr>
+                                    <td>${counter.count}</td>
+                                    <td>${productList.get(counter.index).name}</td>
+                                    <td class="content--center">${dto.quantity}</td>
+                                    <td class="content--center">${dto.total}</td>
+                                </tr>
+                            </c:forEach>
                             <tr>
                                 <td colspan="3">Total Price</td>
-                                <td class="content--center"><%= order.getTotal()%></td>
+                                <td class="content--center">${order.total}</td>
                             </tr>
                             <tr>
                                 <td>Customer</td>
-                                <td colspan="3"><%= order.getCustomer()%></td>
+                                <td colspan="3">${order.customer}</td>
                             </tr>
                             <tr>
                                 <td>Email</td>
-                                <td colspan="3"><%= order.getEmail()%></td>
+                                <td colspan="3">${order.email}</td>
                             </tr>
                             <tr>
                                 <td>Address</td>
-                                <td colspan="3"><%= order.getAddress()%></td>
+                                <td colspan="3">${order.address}</td>
                             </tr>
                         </tbody>
                     </table>

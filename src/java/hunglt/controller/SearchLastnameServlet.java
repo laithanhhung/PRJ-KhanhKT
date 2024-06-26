@@ -24,7 +24,7 @@ import javax.servlet.http.HttpServletResponse;
  */
 @WebServlet(name = "SearchLastnameServlet", urlPatterns = {"/SearchLastnameServlet"})
 public class SearchLastnameServlet extends HttpServlet {
-    private final String SEARCH_PAGE = "search.html";
+    private final String SEARCH_PAGE = "search.jsp";
     private final String RESULT_PAGE = "search.jsp";// tùy theo dữ liệu người nhập mà ta phải show ra view động
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
