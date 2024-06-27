@@ -9,6 +9,7 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <!DOCTYPE html>
+
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
@@ -35,6 +36,8 @@
                             <th>Password</th>
                             <th>Full name</th>
                             <th>Role</th>
+                            <th>Delete</th>
+                            <th>Update</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -45,7 +48,8 @@
                                     ${counter.count} 
                                 </td>
                                 <td>
-                                    <input type="text" name="txtUsername" 
+                                    ${dto.username}
+                                    <input type="hidden" name="txtUsername" 
                                            value="${dto.username}" />
                                 </td>
                                 <td>
@@ -63,17 +67,24 @@
                                         <input type="checkbox" name="chkAdmin" value="ON" />
                                     </c:if>
                                 </td>
-                                <td><a href="${"DispatchServlet?btAction=Delete&pk&lastSearchValue="}" + ${searchValue}>Delete</a></td>
+                                <td>
+                                    <c:url var="urlRewriting" value="DispatchServlet">
+                                        <c:param name="btAction" value="Delete"></c:param>
+                                        <c:param name="pk" value="${dto.username}"></c:param>
+                                        <c:param name="lastSearchValue" value="${searchValue}"></c:param>
+                                    </c:url>
+                                    <a href="${urlRewriting}">Delete</a>    
+                                </td>
                                 <td>
                                     <input type="submit" value="Update" name="btAction" />
-                                    <input type="hidden" name="lastSearchValue" 
-                                           value="${searchValue}"/>
+                                    <input type="hidden" name="lastSearchValue" value="${searchValue}"/>
                                 </td>
                             </tr>
                         </form>  
                     </c:forEach>
-                </c:if>
-                <c:if test="${empty result}">
+                    <tbody>
+                    </c:if>
+                    <c:if test="${empty result}">
                     <h2>No record is matched!!!</h2>
                 </c:if>
             </c:if>

@@ -163,9 +163,9 @@ public class RegistrationDAO implements Serializable {
             con = DBHelper.getConnection(); // SQL+ClassNot.. bat dong nay
             if (con != null) {
                 //2. create SQL String
-                String sql = "Update registration "
-                        + "Set password= ?, isAdmin = ? "
-                        + "Where username= ?"; // prepareStm
+                String sql = "Update Registration "
+                        + "Set password=?, isAdmin=? "
+                        + "Where username=?"; // prepareStm
                 //3. create Statement Object
                 stm = con.prepareStatement(sql);
                 // 2 ? => 2 tham so 
@@ -178,10 +178,10 @@ public class RegistrationDAO implements Serializable {
                 stm.setString(3, username);
                 // loi -> truyen it thamm so, hoac nhieu tham so honw
                 //4. Execute Query
-                int affected = stm.executeUpdate(); // ko nap vi dg prepare ma chi nap 1 lan duuy nhat cho 3. do
+                int affectedRows = stm.executeUpdate(); // ko nap vi dg prepare ma chi nap 1 lan duuy nhat cho 3. do
                 // nap lai tu dau la Statement roi
                 //5. Process result
-                if (affected > 0) { // Dung if (1 dong) while (nhieu dong)
+                if (affectedRows > 0) { // Dung if (1 dong) while (nhieu dong)
                     result = true;
                 }// username va password are existed
             } // end connection is available
@@ -191,6 +191,43 @@ public class RegistrationDAO implements Serializable {
             }
             if (con != null) {
                 con.close(); // SQLExcetion bat dong nay
+            }
+        }
+        return result;
+    }
+    
+    public boolean createAccount(RegistrationDTO dto) throws SQLException, NamingException {
+        Connection con = null;
+        PreparedStatement stm = null;
+        boolean result = false;
+
+        try {
+            //1. connect DB
+            con = DBHelper.getConnection();
+            if (con != null) {
+                //2. create SQL String
+                String sql = "Insert Into Registration("+
+                            "username, password, lastname, isAdmin" +
+                            ") Values("+
+                            "?,?,?,?" +
+                            ")";
+                //3. create Statement Object
+                stm = con.prepareStatement(sql);
+                stm.setString(1, dto.getUsername());
+                stm.setString(2, dto.getPassword());
+                stm.setString(3, dto.getFullName());
+                stm.setBoolean(4, dto.isRole());
+                int affectedRows = stm.executeUpdate();
+                if(affectedRows > 0){
+                    result = true;
+                }
+            }//end connection is available
+        } finally {
+            if (stm != null) {
+                stm.close();
+            }
+            if (con != null) {
+                con.close();
             }
         }
         return result;
