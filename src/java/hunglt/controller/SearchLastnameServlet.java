@@ -38,7 +38,7 @@ public class SearchLastnameServlet extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
-
+        
         //1. Get all user's information
         String searchValue = request.getParameter("txtSearchValue");
         String url = SEARCH_PAGE;

@@ -49,7 +49,7 @@ public class DispatchServlet extends HttpServlet {
         String button = request.getParameter("btAction");
         //copy name thì thằng điều phối và patse cho các thằng sử dụng
         // qua trang web.xml cho trang bắt đầu là DispatchServlet bằng cách copy url của Servlet tại annotation
-        String url = LOGIN_PAGE;
+        String url = null;
         
         try {
             //button bằng null do chưa có nút nào trong file DispatchServlet
@@ -76,7 +76,9 @@ public class DispatchServlet extends HttpServlet {
                 url = CHECK_OUT_CONTROLLER;
             } else if (button.equals("Create Account")){
                 url = ADD_ACCOUNT_CONTROLLER;
-            }  
+            } else if (button.equals("Logout")){
+                url = LOGOUT_CONTROLLER;
+            } 
         }finally{
             RequestDispatcher rd = request.getRequestDispatcher(url);
             rd.forward(request, response);

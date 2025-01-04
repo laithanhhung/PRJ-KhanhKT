@@ -33,11 +33,12 @@
                 margin-top: 15px
             }
         </style>
+
     </head>
     <body>
         <div class="container">
             <h1>Book</h1>
-            <c:set var="result" value="${requestScope.SEARCH_RESULT}"/>
+            <c:set var="result" value="${sessionScope.SEARCH_RESULT}"/>
             <c:if test="${not empty result}">
                 <div class="table-wrapper">
                     <table border="1">
@@ -53,7 +54,6 @@
                             </tr>
                         </thead>
                         <tbody>
-
                             <c:forEach var="dto" items="${result}">
                             <form action="DispatchServlet" method="POST">
                                 <tr>
@@ -69,7 +69,7 @@
                                         ${dto.description}
                                         <input type="hidden" value="${dto.description}" name="descriptionBook" />
                                     </td>
-                                    <td>
+                                    <td class="content--center">
                                         ${dto.quantity}
                                         <input type="hidden" value="${dto.quantity}" name="quantityBook" />
                                     </td>
@@ -87,13 +87,15 @@
                                 </tr>
                             </form>
                         </c:forEach> 
-
                         </tbody>
                     </table>
                 </div>
-            </c:if>
-            <c:if test="${empty result}">
-                Does not have any items in the shop!!!
+                <c:set var="errors" value="${requestScope.CREATE_ERRORS}"/>
+                <c:if test="${not empty errors}">
+                    <font color="red">
+                    ${errors.error}
+                    </font></br>
+                </c:if>
             </c:if>
         </div>
         <form class="content--center btn__viewCart" action="DispatchServlet" method="GET">

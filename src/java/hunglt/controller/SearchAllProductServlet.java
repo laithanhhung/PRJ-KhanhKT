@@ -17,6 +17,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 /**
  *
@@ -37,7 +38,7 @@ public class SearchAllProductServlet extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
-        String url = null;
+        String url = MARKET_PAGE;
         try {
             //2. Call method
             ProductDAO dao = new ProductDAO();
@@ -45,15 +46,14 @@ public class SearchAllProductServlet extends HttpServlet {
             dao.searchAllProduct();
             //3. process
             List<ProductDTO> result = dao.getProducts();
-            request.setAttribute("SEARCH_RESULT", result);
-            url = MARKET_PAGE;
+            HttpSession session = request.getSession();
+            session.setAttribute("SEARCH_RESULT", result);
         } catch(SQLException ex){
             ex.printStackTrace();
         } catch(NamingException ex){
             ex.printStackTrace();
         } finally {
-            RequestDispatcher rd = request.getRequestDispatcher(url);//tạo sao? -> Vì mình dùng thằng ReqScope để lưu thông tin nên phải dùng thằng forward mới giữ lại thông tin
-            rd.forward(request, response);
+            response.sendRedirect(url);
         }
     }
 

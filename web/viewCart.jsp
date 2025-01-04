@@ -57,11 +57,12 @@
         </style>
     </head>
     <body>
-        <h1>Your cart includes</h1>
+        
         <c:set var="cart" value="${sessionScope.CART}"/>
         <c:if test="${not empty cart}">
             <c:set var="items" value="${cart.items}"/>
             <c:if test="${not empty items}">
+                <h1>Your cart includes</h1>
                 <form class="checkout__form">
                     <div class="yourCart">
                         <table border="1">
@@ -92,7 +93,7 @@
                                 </c:forEach>
                                 <tr>
                                     <td colspan="3" class="content--center">
-                                        <a href="DispatchServlet?btAction=Market" style="text-decoration: none; color: black">Add more Books to cart</a>
+                                        <a href="market.jsp" style="text-decoration: none; color: black">Add more Books to cart</a>
                                     </td>
                                     <td class="content--center">
                                         <input type="submit" name="btAction" value="Remove Selected Item"/>
@@ -127,6 +128,14 @@
                     </font>
                 </h2>
             </c:if>
+        </c:if>
+        <c:if test="${empty cart}">
+            <h2>
+                <font color="red">
+                No cart exists!!!
+                <a href="DispatchServlet?btAction=Market">Continue Shopping here!</a>
+                </font>
+            </h2>
         </c:if>
         <%--<h1>Your cart includes</h1>
         <%

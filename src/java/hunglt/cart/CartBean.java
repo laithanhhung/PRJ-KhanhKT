@@ -7,8 +7,10 @@ package hunglt.cart;
 
 import hunglt.product.ProductDTO;
 import java.io.Serializable;
+import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.Map;
+import javax.naming.NamingException;
 
 /**
  *
@@ -22,7 +24,7 @@ public class CartBean implements Serializable {
         return items;
     }
 
-    public void addIteamToCart(ProductDTO item) throws Exception {
+    public void addIteamToCart(ProductDTO item) throws SQLException, NamingException {
         if (item == null) {
             return;
         }
@@ -32,18 +34,15 @@ public class CartBean implements Serializable {
             this.items = new HashMap<>();
         }
         //2. check existed item để tăng số lượng thôi
+        int quantity = 1;
 
-        if (item.isStatus() && (item.getQuantity() <= 0)) {
-            throw new Exception("Item not available!!!");
-        } else {
-            int quantity = 1;
+        if (item.getQuantity() > 0 && item.isStatus() == true) {
             if (this.items.containsKey(item.getName())) {
                 quantity = this.items.get(item.getName()) + 1;
             }
             //3. drop item to items
             this.items.put(item.getName(), quantity);
         }
-
     }
 
     public void removeItemFromCart(String item) {

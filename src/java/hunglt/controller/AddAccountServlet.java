@@ -4,7 +4,6 @@
  * and open the template in the editor.
  */
 package hunglt.controller;
-
 import hunglt.registration.RegistrationCreateError;
 import hunglt.registration.RegistrationDAO;
 import hunglt.registration.RegistrationDTO;
@@ -49,7 +48,6 @@ public class AddAccountServlet extends HttpServlet {
         String fullname = request.getParameter("txtFullname");
         boolean foundErr = false; // để check có lỗi
         RegistrationCreateError errors = new RegistrationCreateError();// để hứng lỗi
-        
         try {
             //Có 4 error user và 1 error system
             //2. Check User Errors
@@ -86,13 +84,13 @@ public class AddAccountServlet extends HttpServlet {
         } catch (NamingException ex) {
             String msg = ex.getMessage();
             log("AddAccountServlet _ Naming: " + msg);
-            if (msg.contains("duplicate")) {
-                errors.setUsernameIsExisted(username + "is existed");
-            }
-            request.setAttribute("CREATE_ERRORS", errors);
         } catch (SQLException ex) {
             String msg = ex.getMessage();
             log("AddAccountServlet _ SQL: " + msg);
+            if (msg.contains("duplicate")) {
+                errors.setUsernameIsExisted(username + " is existed");
+            }
+            request.setAttribute("CREATE_ERRORS", errors);
         } finally {
             RequestDispatcher rd = request.getRequestDispatcher(url);
             rd.forward(request, response);

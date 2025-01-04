@@ -4,7 +4,6 @@
  * and open the template in the editor.
  */
 package hunglt.product;
-
 import hunglt.util.DBHelper;
 import java.io.Serializable;
 import java.sql.Connection;
@@ -161,4 +160,44 @@ public class ProductDAO implements Serializable {
         return null;
     }
 
+    public boolean updateProduct(ProductDTO dto)
+            throws SQLException, NamingException {
+        Connection con = null;
+        PreparedStatement stm = null;
+        boolean result = false;
+
+        try {
+            //1. connect DB
+            con = DBHelper.getConnection(); // SQL+ClassNot.. bat dong nay
+            if (con != null) {
+                //2. create SQL String
+                String sql = "Update Product "
+                        + "Set name=?, description=?, quantity=?, price=?, status=? "
+                        + "Where sku=?"; // prepareStm
+                //3. create Statement Object
+                stm = con.prepareStatement(sql);
+                // 2 ? => 2 tham so 
+                stm.setString(1, dto.getName());
+                stm.setString(2, dto.getDescription());
+                stm.setInt(3, dto.getQuantity());
+                stm.setFloat(4, dto.getPrice());
+                stm.setBoolean(5, dto.isStatus());
+                stm.setInt(6, dto.getSku());
+                //4. Execute Query
+                int affectedRows = stm.executeUpdate();
+                //5. Process result
+                if (affectedRows > 0) { 
+                    result = true;
+                }
+            }
+        } finally {
+            if (stm != null) {
+                stm.close();
+            }
+            if (con != null) {
+                con.close(); // SQLExcetion bat dong nay
+            }
+        }
+        return result;
+    }
 }
